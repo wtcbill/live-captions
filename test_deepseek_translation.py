@@ -24,15 +24,20 @@ class DeepSeekTests(unittest.TestCase):
 
     def test_uses_summary_instructions_for_the_minute_transcript(self):
         translator = DeepSeekTranslator.__new__(DeepSeekTranslator)
+        sentences = [
+            {"ja": "受付は９時", "zh": "9点签到"},
+            {"ja": "二階で集合", "zh": "在二楼集合"},
+        ]
         with patch.object(
             translator, "complete", return_value="• 9点签到。"
         ) as complete:
             self.assertEqual(
-                translator.summarize("受付は９時\n二階で集合"), "• 9点签到。"
+                translator.summarize(sentences), "• 9点签到。"
             )
         content, instructions, timeout, _ = complete.call_args.args
-        self.assertEqual(content, "受付は９時\n二階で集合")
+        self.assertEqual(json.loads(content), sentences)
         self.assertIn("最近一分钟", instructions)
+        self.assertIn("只输出中文", instructions)
         self.assertGreater(timeout, 2.5)
 
     def test_translates_current_sentence_using_one_sentence_of_context(self):

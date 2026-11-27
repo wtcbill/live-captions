@@ -1,0 +1,4 @@
+numpy==2.5.5
+PyAudioWPatch==0.2.12.9
+soxr==1.1.0
+sherpa-onnx @ https://huggingface.co/csukuangfj2/sherpa-onnx-wheels/resolve/main/cuda/2.0.1/sherpa_onnx-2.0.1%2Bcuda12.cudnn9-cp312-cp312-win_amd64.whl

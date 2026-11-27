@@ -130,7 +130,12 @@ class CaptionBuffer:
         return piece
 
     def finish_on_pause(self, now: float) -> Caption | None:
-        if now - self.changed < 1.35 or not HAS_WORD.search(self.pending):
+        if now - self.changed < 1.35:
+            return None
+        return self.finish_pending()
+
+    def finish_pending(self) -> Caption | None:
+        if not HAS_WORD.search(self.pending):
             return None
         piece = self.commit(self.pending, self.offset, len(self.snapshot))
         self.offset = len(self.snapshot)
